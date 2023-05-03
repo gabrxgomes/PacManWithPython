@@ -1,4 +1,4 @@
-from ui import ui_print
+#from ui import ui_print
 import random
 # @ -> meu personagem
 # G -> ghosts
@@ -117,12 +117,16 @@ def is_a_wall(map, next_x, next_y):
     return is_a_wall
 
 def is_a_ghost(map, next_x, next_y):
-    is_a_wall = map[next_x][next_y] == 'G'
-    return is_a_wall
+    return map[next_x][next_y] == 'G'
+    
 
 def is_a_pill(map, next_x, next_y):
-    is_a_wall = map[next_x][next_y] == 'P'
-    return is_a_wall
+    return map[next_x][next_y] == 'P'
+    
+
+def is_pacman(map, next_x, next_y):
+    return map[next_x][next_y] == '@'
+    
 
 def within_borders(map, next_x, next_y):
     number_of_rows = len(map)
@@ -213,6 +217,8 @@ def move_ghosts(map):
 
 
         #checando antes da movimentação atual
+        if not within_borders(map, next_ghost_x, next_ghost_y):
+            continue
         if is_a_wall(map ,next_ghost_x, next_ghost_y):
             continue
 
@@ -223,7 +229,7 @@ def move_ghosts(map):
             continue
 
         if is_pacman(map, next_ghost_x, next_ghost_y):
-            continue
+            return True
 
         #MOVER O FANTASMA PARA UMA POSIÇÃO ALEATORIA
         everything_to_the_left = map[ghost_x][0:ghost_y]
@@ -234,3 +240,5 @@ def move_ghosts(map):
         everything_to_the_left = map[next_ghost_x][0:next_ghost_y]
         everything_to_the_right = map[next_ghost_x][next_ghost_y+1:]
         map[next_ghost_x] = everything_to_the_left + "G" + everything_to_the_right
+
+        return False
